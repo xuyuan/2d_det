@@ -1,0 +1,3 @@
+_BASE_: "Base-CenterNet2.yaml"
+MODEL:
+  WEIGHTS: "https://drontheimerstr.synology.me/model_zoo/detectron2/CenterNet2_R50_1x-76a63fb2.pth"

@@ -1,0 +1,7 @@
+_BASE_: "Base_S4_DLA.yaml"
+MODEL:
+  WEIGHTS: "https://drontheimerstr.synology.me/model_zoo/detectron2/CenterNet-S4_DLA_8x-b6bfebe1.pth"
+SOLVER:
+  MAX_ITER: 90000
+  BASE_LR: 0.08
+  IMS_PER_BATCH: 128
