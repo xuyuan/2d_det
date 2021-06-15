@@ -1,4 +1,4 @@
-# 2D Object Detection Demo
+# 2D Object Detection Demo & Benchmark
 
 ## Demo
 ```shell
