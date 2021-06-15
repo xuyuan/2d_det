@@ -1,4 +1,4 @@
-name: detnet
+name: 2d_det
 channels:
   - defaults
   - conda-forge
