@@ -92,6 +92,12 @@ class ImageStream(IterableDataset):
                 image_msg_event.clear()
 
                 image = image_to_numpy(imgmsg)
+                if imgmsg.encoding.startswith('bgr'):
+                    if image.shape[-1] == 3:
+                        image = image[..., (2, 1, 0)]
+                    elif image.shape[-1] == 4:
+                        image = image[..., (2, 1, 0, 3)]
+                
                 yield {'image_id': f"{imgmsg.header.seq}", 'input': Image.fromarray(image), 'file_name': self.ros_topic}
 
     def __rshift__(self, other):
