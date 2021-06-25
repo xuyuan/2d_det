@@ -5,6 +5,7 @@ import numpy as np
 import cv2
 import time
 import argparse
+from pathlib import Path
 from .utils.visualization import draw_detection, draw_masks_on_image
 from .trainer.data.image_stream import ImageStream
 from .trainer.transforms.vision import Resize, ToRGB
@@ -37,6 +38,7 @@ if __name__ == '__main__':
                         help='resize the smaller edge of the image if positive number given, or resize to given size if 2 numbers given')
     parser.add_argument("--max-image-size", type=int, help='limit the maximum size of longer edge of image, it is useful to avoid OOM')
     parser.add_argument("--interval", type=int, default=1, help='detection interval between frames')
+    parser.add_argument("--save-images", type=str, help='directory to save images')
     args = parser.parse_args()
 
     net = load(args.model)
@@ -50,6 +52,11 @@ if __name__ == '__main__':
 
     if args.resize:
         image_stream = image_stream >> Resize(args.resize, interpolation=Resize.BILINEAR, max_size=args.max_image_size)
+
+    save_images = None
+    if args.save_images:
+        save_images = Path(args.save_images)
+        save_images.mkdir(parents=True)
 
     start_time = time.time()
     delay = 10
@@ -69,6 +76,10 @@ if __name__ == '__main__':
         rgb = np.asarray(image_with_results)
         bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
         cv2.imshow('frame', bgr)
+        if save_images:
+            filename = save_images / ("%08d.png" % n_frames)
+            cv2.imwrite(str(filename), bgr)
+
         n_frames += 1
         last_file_name = sample['file_name']
         if n_frames % 100 == 0:
